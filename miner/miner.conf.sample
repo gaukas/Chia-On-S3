@@ -12,7 +12,7 @@ _S3_MOUNTPOINT="/plots/" # Only For Miner!
 # Bucket Configuration
 
 # We recommend to limit each directory/bucket under 10TiB.
-_UPDATE_RATE=2 # Use a new bucket every 2 days. 
+_UPDATE_RATE=2 # Use 2 new folder/bucket every day. 
 _UPDATE_TARGET="folder" # "bucket" is yet to be supported
 _DATE_BASE="2021-05-01"
 _FOLDER_PREFIX="cos3"

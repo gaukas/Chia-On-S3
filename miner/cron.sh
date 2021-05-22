@@ -2,23 +2,19 @@ source miner.conf
 
 _REFERENCE_DATE=$(date -d ${_DATE_BASE} +%s)
 _CURRENT_DATE=$(date -d 'now' +%s)
-_DATE_DIFF=$(( (${_CURRENT_DATE}-${_REFERENCE_DATE})/(86400*${_UPDATE_RATE}) ))
-_NEXT_DIFF=$(( ${_DATE_DIFF} + 1 ))
-
-sudo mkdir -p ${_S3_MOUNTPOINT}/${_BUCKET_PREFIX}/${_FOLDER_PREFIX}-${_DATE_DIFF} # Make sure today's folder is AVAILABLE
-sudo mkdir -p ${_S3_MOUNTPOINT}/${_BUCKET_PREFIX}/${_FOLDER_PREFIX}-${_NEXT_DIFF} # Also create folder for tmr
-
-# Make sure mining folder is added to config
-TODAY_DIR=$(grep ${_S3_MOUNTPOINT}/${_BUCKET_PREFIX}/${_FOLDER_PREFIX}-${_DATE_DIFF} ${_MINER_CONFIG})
-if [ -z ${TODAY_DIR} ]; then
-    # Append to config
-    sudo echo "- ${_S3_MOUNTPOINT}/${_BUCKET_PREFIX}/${_FOLDER_PREFIX}-${_DATE_DIFF} "
-fi
-
-NEXT_DIR=$(grep ${_S3_MOUNTPOINT}/${_BUCKET_PREFIX}/${_FOLDER_PREFIX}-${_NEXT_DIFF} ${_MINER_CONFIG})
-if [ -z ${_NEXT_DIR} ]; then
-    # Append to config
-    sudo echo "- ${_S3_MOUNTPOINT}/${_BUCKET_PREFIX}/${_FOLDER_PREFIX}-${_NEXT_DIFF} "
-fi
+_DATE_DIFF=$(( (${_CURRENT_DATE}-${_REFERENCE_DATE})/(86400/${_UPDATE_RATE}) ))
+_DATE_EXTENSION=$(( 2*${_UPDATE_RATE} )) # Pre-create all folders needed in 2 days
+i=0
+while [ $i -ne ${_DATE_EXTENSION} ]
+do
+    DIR_NAME=${_S3_MOUNTPOINT}/${_BUCKET_PREFIX}/${_FOLDER_PREFIX}-$((${_DATE_DIFF}+$i))
+    mkdir -p ${DIR_NAME}
+    CHECK_EXIST=$(grep ${DIR_NAME} ${_MINER_CONFIG})
+    if [ -z ${CHECK_EXIST} ]; then
+        # Append to config if not in config
+        sudo echo "- ${DIR_NAME} " >> ${_MINER_CONFIG}
+    fi
+    i=$(($i+1))
+done
 
 sudo systemctl restart chia-miner
