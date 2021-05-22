@@ -1,2 +1,5 @@
-# chia-on-wasabi
-Farm your Chia plots using Wasabi or any other S3-compatible service as storage!
+# Chia On S3
+
+Set up your Chia harvester with a S3-compatible storage. 
+
+### Installation
