@@ -2,6 +2,9 @@
 
 source plotter.conf
 
+sudo apt update
+sudo apt install unzip zip -y
+
 path_to_installation=$PWD
 
 # Install rclone
