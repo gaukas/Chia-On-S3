@@ -16,6 +16,9 @@ sudo chown root:root /usr/bin/rclone
 sudo chmod 755 /usr/bin/rclone
 rm -rf rclone-*-linux-amd64 rclone-current-linux-amd64.zip
 
+sudo mkdir -p $(dirname ${_LOG_PATH})
+sudo chmod 777 $(dirname ${_LOG_PATH})
+
 mkdir -p ~/.config/rclone/
 cat << EOF > ~/.config/rclone/rclone.conf
 [${_RCLONE_PROFILE}]

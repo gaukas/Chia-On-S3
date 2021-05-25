@@ -23,4 +23,4 @@ _BUCKET_PREFIX="ChiaOnS3"
 
 # Local Folder
 _PLOT_FOLDER="/data/plots"
-_LOG_FOLDER="/home/rclone/latest.log"
+_LOG_PATH="/home/rclone/latest.log"
